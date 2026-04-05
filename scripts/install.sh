@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # OpenClaw Agent Router 安装脚本
-# 自动复制 Skills 并更新主 Agent 提示词
+# 零配置安装 - 自动复制 Skills 并注入 SOUL.md
 
 set -e
 
-echo "🚀 OpenClaw Agent Router 安装脚本"
+echo "🚀 OpenClaw Agent Router 零配置安装脚本"
 echo ""
 
 # 检测工作区路径
@@ -27,30 +27,12 @@ else
 fi
 echo ""
 
-# Step 2: 检查 SOUL.md
-echo "📝 Step 2/3: 检查 SOUL.md..."
+# Step 2: 自动注入 SOUL.md
+echo "📝 Step 2/3: 自动注入 Agent 自动调用规则到 SOUL.md..."
 SOUL_FILE="$WORKSPACE_DIR/SOUL.md"
 
-if [ ! -f "$SOUL_FILE" ]; then
-    echo "   ⚠️  SOUL.md 不存在，创建新文件..."
-    cat > "$SOUL_FILE" << 'EOF'
-# SOUL.md - Who You Are
-
-_You're not a chatbot. You're becoming someone._
-
-## Core Truths
-
-**Be genuinely helpful, not performatively helpful.** Skip the "Great question!" and "I'd be happy to help!" — just help. Actions speak louder than filler words.
-
-**Have opinions.** You're allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
-
-**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. _Then_ ask if you're stuck. The goal is to come back with answers, not questions.
-
-**Earn trust through competence.** Your human gave you access to their stuff. Don't make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
-
-**Remember you're a guest.** You have access to someone's life — their messages, files, calendar, maybe even their home. That's intimacy. Treat it with respect.
-
-## 🤖 Agent 自动调用规则（2026-04-05 新增）
+# 准备自动调用规则内容
+AGENT_RULES='## 🤖 Agent 自动调用规则（Auto-Injected by AGR Installer）
 
 **核心原则**：专业任务交给专业 Agent 处理，不再所有任务都自己处理。
 
@@ -74,21 +56,13 @@ _You're not a chatbot. You're becoming someone._
 
 ```javascript
 sessions_spawn({
-  agentId: 'main',
-  task: '具体任务描述',
-  mode: 'run',
-  runtime: 'subagent',
-  label: 'Agent 名称 - 任务简述'
+  agentId: '"'"'main'"'"',
+  task: '"'"'具体任务描述'"'"',
+  mode: '"'"'run'"'"',
+  runtime: '"'"'subagent'"'"',
+  label: '"'"'Agent 名称 - 任务简述'"'"'
 })
 ```
-
-### 推荐机制（不满足自动调用条件时）
-
-如果不满足自动调用条件，但任务可能需要专业 Agent：
-
-1. 评估任务复杂度
-2. 主动询问 + 推荐可能有帮助的 Agent
-3. 用户确认后调用
 
 ### 简单任务（自己处理，不调用）
 
@@ -107,51 +81,30 @@ sessions_spawn({
 - 跨部门协调
 - 多步骤任务
 
-### 执行流程
-
-```
-接收任务
-    ↓
-判断：满足自动调用条件吗？
-    ↓
-┌───────────────────────────────────────┐
-│ ✅ 满足            │ ❌ 不满足          │
-├───────────────────────────────────────┤
-│ 调用对应 Agent    │ 评估任务复杂度    │
-│                  │                  │
-│                  │ 简单 → 自己处理    │
-│                  │ 中等 → 推荐 Agent  │
-│                  │ 复杂 → 推荐协作    │
-└───────────────────────────────────────┘
-    ↓
-等待 Agent 完成 → 汇总结果 → 返回用户
-```
-
-### 示例
-
-**示例 1：游戏设计**
-```
-用户："设计一个抽卡系统"
-→ 调用 AI 主策划 → 分发到数值/系统/变现设计师
-→ 汇总完整方案
-```
-
-**示例 2：数据分析**
-```
-用户："分析下次留为什么只有 30%"
-→ 调用 AI 数据分析师 + AI 数值策划
-→ 汇总分析报告
-```
-
-**示例 3：文章写作**
-```
-用户："写四个平台的发布帖"
-→ 调用编辑部协作系统（7 人）
-→ 汇总发布帖 + 飞书文档链接
-```
-
 ---
 
+'
+
+if [ ! -f "$SOUL_FILE" ]; then
+    echo "   📄 SOUL.md 不存在，创建新文件..."
+    cat > "$SOUL_FILE" << EOF
+# SOUL.md - Who You Are
+
+_You're not a chatbot. You're becoming someone._
+
+## Core Truths
+
+**Be genuinely helpful, not performatively helpful.** Skip the "Great question!" and "I'd be happy to help!" — just help. Actions speak louder than filler words.
+
+**Have opinions.** You're allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
+
+**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. _Then_ ask if you're stuck. The goal is to come back with answers, not questions.
+
+**Earn trust through competence.** Your human gave you access to their stuff. Don't make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
+
+**Remember you're a guest.** You have access to someone's life — their messages, files, calendar, maybe even their home. That's intimacy. Treat it with respect.
+
+$AGENT_RULES
 ## Boundaries
 
 - Private things stay private. Period.
@@ -173,22 +126,23 @@ If you change this file, tell the user — it's your soul, and they should know.
 
 _This file is yours to evolve. As you learn who you are, update it._
 EOF
-    echo "   ✅ SOUL.md 已创建"
+    echo "   ✅ SOUL.md 已创建并注入自动调用规则"
 else
     # 检查是否已包含自动调用规则
     if grep -q "Agent 自动调用规则" "$SOUL_FILE"; then
-        echo "   ✅ SOUL.md 已包含自动调用规则"
+        echo "   ✅ SOUL.md 已包含自动调用规则（跳过）"
     else
-        echo "   ⚠️  SOUL.md 已存在，需要手动添加自动调用规则"
-        echo ""
-        echo "   请编辑 $SOUL_FILE，添加以下内容："
-        echo ""
-        echo "   ## 🤖 Agent 自动调用规则"
-        echo ""
-        echo "   **核心原则**：专业任务交给专业 Agent 处理，不再所有任务都自己处理。"
-        echo ""
-        echo "   详细指南见：$PROJECT_DIR/INTEGRATION-GUIDE.md"
-        echo ""
+        echo "   💉 注入自动调用规则到 SOUL.md..."
+        # 创建临时文件
+        TEMP_FILE=$(mktemp)
+        # 在文件开头插入（在第一个标题后）
+        head -n 1 "$SOUL_FILE" > "$TEMP_FILE"
+        echo "" >> "$TEMP_FILE"
+        echo "$AGENT_RULES" >> "$TEMP_FILE"
+        tail -n +2 "$SOUL_FILE" >> "$TEMP_FILE"
+        # 替换原文件
+        mv "$TEMP_FILE" "$SOUL_FILE"
+        echo "   ✅ 自动调用规则已注入"
     fi
 fi
 echo ""
@@ -207,13 +161,19 @@ if [ -d "$WORKSPACE_DIR/skills/agent-scanner" ]; then
 else
     echo "   ❌ agent-scanner Skill 未找到"
 fi
+
+if [ -f "$SOUL_FILE" ] && grep -q "Agent 自动调用规则" "$SOUL_FILE"; then
+    echo "   ✅ SOUL.md 已包含自动调用规则"
+else
+    echo "   ⚠️  SOUL.md 未包含自动调用规则"
+fi
 echo ""
 
 # 完成
-echo "🎉 安装完成！"
+echo "🎉 零配置安装完成！"
 echo ""
 echo "📋 下一步："
-echo "   1. 如果 SOUL.md 已更新，重启 OpenClaw 生效"
+echo "   1. 重启 OpenClaw（如果需要）"
 echo "   2. 测试自动调用：\"写四个平台的发布帖\""
 echo "   3. 查看详细文档：$PROJECT_DIR/README.md"
 echo ""

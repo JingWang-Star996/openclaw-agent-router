@@ -58,24 +58,26 @@ System automatically calls:
 
 ### Installation
 
-**方式 1：自动安装脚本（推荐）**
+**零配置安装（推荐）**
 
 ```bash
 # 克隆项目
 git clone https://github.com/JingWang-Star996/openclaw-agent-router.git
 
-# 运行安装脚本
+# 运行零配置安装脚本
 cd openclaw-agent-router
 chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
 
-脚本会自动：
-1. 复制 Skills 到工作区
-2. 创建/更新 SOUL.md（添加自动调用规则）
-3. 验证安装
+**安装脚本自动完成**：
+1. ✅ 复制 Skills 到工作区
+2. ✅ 自动注入 SOUL.md（添加自动调用规则）
+3. ✅ 验证安装
 
-**方式 2：手动安装**
+**无需手动配置！** 安装后主 AI 自动调用 Agent。
+
+**方式 2：手动安装**（不推荐，需要手动配置）
 
 ```bash
 # 克隆项目
@@ -84,9 +86,8 @@ git clone https://github.com/JingWang-Star996/openclaw-agent-router.git
 # 复制 Skills 到工作区
 cp -r openclaw-agent-router/skills/* ~/.openclaw/workspace/skills/
 
-# 更新 SOUL.md（重要！）
+# 手动更新 SOUL.md（必须！）
 # 编辑 ~/.openclaw/workspace/SOUL.md，添加"Agent 自动调用规则"章节
-# 详见 INTEGRATION-GUIDE.md
 ```
 
 ### Configuration（重要！）
