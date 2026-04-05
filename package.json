@@ -1,0 +1,42 @@
+{
+  "name": "openclaw-agent-router",
+  "version": "1.0.0",
+  "description": "智能 Agent 路由系统 - 让 OpenClaw 自动调用最合适的 Agent",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:real": "node tests/test-real-agents.js",
+    "lint": "eslint src/",
+    "build": "echo 'No build step required for OpenClaw Skills'",
+    "publish:skills": "cp -r skills/* ~/.openclaw/workspace/skills/"
+  },
+  "keywords": [
+    "openclaw",
+    "agent",
+    "router",
+    "ai",
+    "multi-agent",
+    "collaboration"
+  ],
+  "author": "王鲸",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/openclaw-agent-router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/openclaw-agent-router/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/openclaw-agent-router#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
