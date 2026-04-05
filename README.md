@@ -58,17 +58,83 @@ System automatically calls:
 
 ### Installation
 
+**方式 1：自动安装脚本（推荐）**
+
 ```bash
-# Clone repository
+# 克隆项目
 git clone https://github.com/JingWang-Star996/openclaw-agent-router.git
 
-# Copy Skills to OpenClaw workspace
-cp -r skills/* ~/.openclaw/workspace/skills/
+# 运行安装脚本
+cd openclaw-agent-router
+chmod +x scripts/install.sh
+./scripts/install.sh
 ```
+
+脚本会自动：
+1. 复制 Skills 到工作区
+2. 创建/更新 SOUL.md（添加自动调用规则）
+3. 验证安装
+
+**方式 2：手动安装**
+
+```bash
+# 克隆项目
+git clone https://github.com/JingWang-Star996/openclaw-agent-router.git
+
+# 复制 Skills 到工作区
+cp -r openclaw-agent-router/skills/* ~/.openclaw/workspace/skills/
+
+# 更新 SOUL.md（重要！）
+# 编辑 ~/.openclaw/workspace/SOUL.md，添加"Agent 自动调用规则"章节
+# 详见 INTEGRATION-GUIDE.md
+```
+
+### Configuration（重要！）
+
+**安装后需要更新主 Agent 提示词，才能启用自动调用**。
+
+编辑 `~/.openclaw/workspace/SOUL.md` 或你的主 Agent 提示词文件，添加：
+
+```markdown
+## 🤖 Agent 自动调用规则
+
+**核心原则**：专业任务交给专业 Agent 处理。
+
+### 自动调用条件
+
+| 任务类型 | 关键词 | 调用 Agent |
+|----------|--------|-----------|
+| 游戏设计 | 设计/玩法/系统/数值/战斗/抽卡/宠物 | AI 主策划 → 专业策划 |
+| 数据分析 | 留存/付费/CVR/ 数据/分析 | AI 数据分析师 + 数值策划 |
+| 项目管理 | 排期/进度/资源/外包 | PMO 项目经理 |
+| 文章写作 | 文章/文档/周报/写作 | 编辑部协作系统 |
+| 代码技术 | 代码/Bug/ 架构/技术 | AI 主程 |
+| 美术 UX | 美术/UI/UX/ 界面/视觉 | AI 主美 + UX 设计师 |
+
+### 调用方式
+
+使用 `sessions_spawn` 调用：
+```javascript
+sessions_spawn({
+  task: '具体任务',
+  mode: 'run',
+  runtime: 'subagent',
+  label: 'Agent 名称 - 任务简述'
+})
+```
+
+### 简单任务（自己处理）
+- 日常对话、简单查询、翻译、文件操作
+
+### 复杂任务（必须调用）
+- 游戏系统设计、数据分析报告、完整文章写作
+```
+
+详细集成指南见：[INTEGRATION-GUIDE.md](INTEGRATION-GUIDE.md)
 
 ### Usage
 
-Automatically enabled after installation, no extra configuration needed.
+配置后自动生效。
 
 **Examples**:
 ```
