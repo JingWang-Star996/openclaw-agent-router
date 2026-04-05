@@ -4,6 +4,21 @@
 
 ---
 
+## 🌍 多语言版本 / Multi-language Versions
+
+| 语言 | 文档 |
+|------|------|
+| 🇨🇳 中文 | [README.md](README.md) |
+| 🇬🇧 English | [README.en.md](README.en.md) |
+| 🇯🇵 日本語 | [README.ja.md](README.ja.md) |
+| 🇰🇷 한국어 | [README.ko.md](README.ko.md) |
+| 🇫🇷 Français | [README.fr.md](README.fr.md) |
+| 🇪🇸 Español | [README.es.md](README.es.md) |
+
+---
+
+---
+
 ## 📕 小红书版本
 
 **标题**：

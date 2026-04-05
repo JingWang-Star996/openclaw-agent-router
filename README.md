@@ -1,6 +1,19 @@
 # OpenClaw Agent Router
 
-**Intelligent Agent Routing System** - Let OpenClaw Automatically Call the Most Suitable Agent
+**智能 Agent 路由系统** - 让 OpenClaw 自动调用最合适的 Agent
+
+---
+
+## 🌍 多语言文档 / Multi-language Docs
+
+| 语言 | 文档 |
+|------|------|
+| 🇨🇳 中文 | [README.md](README.md) |
+| 🇬🇧 English | [README.en.md](README.en.md) |
+| 🇯🇵 日本語 | [README.ja.md](README.ja.md) |
+| 🇰🇷 한국어 | [README.ko.md](README.ko.md) |
+| 🇫🇷 Français | [README.fr.md](README.fr.md) |
+| 🇪🇸 Español | [README.es.md](README.es.md) |
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Plugin-green.svg)](https://github.com/openclaw/openclaw)
